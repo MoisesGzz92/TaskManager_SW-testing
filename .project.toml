@@ -6,3 +6,6 @@ extend-ignore = ["E203", "E266", "E501", "W503"]
 [tool.black]
 line-length = 100
 skip-string-normalization = true # disable normalization of string quotes
+
+[tool.bandit]
+exclude = ["__pycache__", "scripts", "doc", "requirements.txt", "doc", "features", "tests"]
