@@ -8,6 +8,7 @@ class TaskManager:
     """
     This class manages a list of tasks. It initializes an empty list of tasks.
     """
+
     def __init__(self):
         """
         Initializes the TaskManager with an empty list of tasks.
@@ -18,7 +19,7 @@ class TaskManager:
         """
         Adds a new task to the list of tasks.
         """
-        self.tasks.append({'name': task_name, 'description': task_description})
+        self.tasks.append({"name": task_name, "description": task_description})
 
     def get_all_tasks(self):
         """
@@ -29,7 +30,7 @@ class TaskManager:
     def get_task_by_name(self, task_name):
         """Find a task by its name."""
         for task in self.tasks:
-            if task['name'] == task_name:
+            if task["name"] == task_name:
                 return task
         raise KeyError(f"Task with name '{task_name}' not found.")
 
@@ -40,7 +41,7 @@ class TaskManager:
         """
         # self.tasks.append({'name': task_name})
         # self.tasks.remove({'name': task_name})
-        self.tasks = [task for task in self.tasks if task['name'] != task_name]
+        self.tasks = [task for task in self.tasks if task["name"] != task_name]
 
     # TODO: GRUPPE 2: Add a method to update a task in the list of tasks
 

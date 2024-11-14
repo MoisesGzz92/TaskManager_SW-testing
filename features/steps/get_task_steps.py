@@ -3,7 +3,7 @@
 # Everyone is permitted to copy and distribute verbatim copies
 # of this license document, but changing it is not allowed.
 
-from behave import given, when, then   
+from behave import given, when, then
 
 # handle to the task manager application
 from taskmanager.app.task_manager import TaskManager
