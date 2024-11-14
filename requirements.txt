@@ -4,3 +4,4 @@ behave==1.2.6
 # for static code analysis
 flake8==7.1.1
 black==24.10.0
+bandit==1.7.10
