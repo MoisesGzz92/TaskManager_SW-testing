@@ -1,0 +1,8 @@
+[tool.flake8]
+max-line-length = 100
+exclude = ["__pycache__"]
+extend-ignore = ["E203", "E266", "E501", "W503"]
+
+[tool.black]
+line-length = 100
+skip-string-normalization = true # disable normalization of string quotes
