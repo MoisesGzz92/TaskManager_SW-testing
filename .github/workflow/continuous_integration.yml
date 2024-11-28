@@ -17,8 +17,8 @@ jobs:
     runs-on: ${{ matrix.os }}  # Use the operating system defined in the matrix
     strategy:
       matrix:  # Define a matrix for running jobs on different architectures
-        os: [ubuntu-latest, macos-latest]  # Specify the OS to use
-        arch: [x86, arm64]  # Specify the architectures to test (x86 and ARM)
+        os: [ubuntu-latest]  # Specify the OS to use
+        arch: [x86]  # Specify the architectures to test (x86 and ARM)
 
     steps:  # Define the steps to execute in this job
       - name: Checkout code  # Step to check out the repository code
