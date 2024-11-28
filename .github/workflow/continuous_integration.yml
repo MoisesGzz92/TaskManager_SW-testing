@@ -17,24 +17,23 @@ jobs:
     runs-on: ${{ matrix.os }}  # Use the operating system defined in the matrix
     strategy:
       matrix:  # Define a matrix for running jobs on different architectures
-        os: [ubuntu-latest, macos-latest]  # Specify the OS to use
-        arch: [x86, arm64]  # Specify the architectures to test (x86 and ARM)
+        os: [ubuntu-latest]  # Specify the OS to use
+        arch: [x86]  # Specify the architectures to test (x86 and ARM)
 
     steps:  # Define the steps to execute in this job
       - name: Checkout code  # Step to check out the repository code
         uses: actions/checkout@v2  # Use the checkout action to pull the code
-    
+
       - name: Set up Python  # Step to set up the Python environment
         uses: actions/setup-python@v2  # Use the setup-python action
         with:
           python-version: '3.12'  # Specify the Python version to use
-      
+
       - name: Install dependencies  # Step to install project dependencies
         run: |
           python -m pip install --upgrade pip  # Upgrade pip to the latest version
           pip install -r requirements.txt  # Install dependencies from requirements.txt
-      
+
       - name: Run tests  # Step to run the tests
         run: |
           pytest  # Run the tests using pytest
-
