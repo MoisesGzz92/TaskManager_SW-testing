@@ -26,8 +26,8 @@ class TaskManager:
         if len(task_name) > 255 or len(task_description) > 255:
             raise ValueError("Name or description cannot be longer than 255 characters")
         if task_name in self.tasks:
-            raise ValueError("Task with this name already exists.")
-        self.tasks[task_name] = {"description": task_description}
+            raise ValueError(f"Task with name '{task_name}' already exists.")
+        self.tasks[task_name] = {"name": task_name, "description": task_description}
 
     def get_all_tasks(self):
         """
@@ -53,35 +53,33 @@ class TaskManager:
             raise KeyError(f"Task with name '{task_name}' not found.")
         del self.tasks[task_name]
 
-    def update_task(self, task_name, new_task_name=None, new_task_description=None):
+    def update_task(self, task_name, new_name, new_description):
         """
         Updates an existing task's name and/or description.
         :param task_name: The name of the task to update.
-        :param new_task_name: The new name of the task (optional).
-        :param new_task_description: The new description of the task (optional).
+        :param new_name: The new name of the task (optional).
+        :param new_description: The new description of the task (optional).
         :return: True if the task was updated, False if the task was not found.
         """
         if task_name is None or task_name == "":
             raise ValueError("Name cannot be empty")
         if task_name not in self.tasks:
-            return False  # Task not found
+            raise KeyError(f"Task with name '{task_name}' not found.")
+        if new_name and new_name != task_name and new_name in self.tasks:
+            raise ValueError(f"Task with name '{new_name}' already exists.")
 
-        # Check if the new name is valid
-        if new_task_name == "":
-            raise ValueError("Name cannot be empty")
-        if new_task_description == "":
-            raise ValueError("Description cannot be empty")
-
-        # Update the task
-        if new_task_name:
-            self.tasks[new_task_name] = self.tasks.pop(task_name)
-            self.tasks[new_task_name]["description"] = (
-                new_task_description
-                if new_task_description
-                else self.tasks[new_task_name]["description"]
-            )
-        elif new_task_description:
-            self.tasks[task_name]["description"] = new_task_description
+        # Update the task with both name and description
+        if new_name:
+            self.tasks[new_name] = {
+                "name": new_name,
+                "description": new_description
+                if new_description is not None
+                else self.tasks[task_name]["description"],
+            }
+            if new_name != task_name:
+                del self.tasks[task_name]
+        elif new_description is not None:
+            self.tasks[task_name]["description"] = new_description
 
         return True  # Task updated successfully
 
