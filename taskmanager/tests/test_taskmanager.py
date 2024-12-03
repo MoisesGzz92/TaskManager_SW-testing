@@ -49,9 +49,9 @@ class TestTaskManager(unittest.TestCase):
         """Test updating an existing task."""
         self.task_manager.add_task("Task 1", "Description 1")
         updated = self.task_manager.update_task(
-            "Task 1",
-            new_task_name="Updated Task 1",
-            new_task_description="Updated Description",
+            task_name="Task 1",
+            new_name="Updated Task 1",
+            new_description="Updated Description",
         )
         self.assertTrue(updated)
         task = self.task_manager.get_task_by_name("Updated Task 1")
@@ -125,29 +125,29 @@ class TestTaskManager(unittest.TestCase):
     def test_update_task_invalid_empty_name(self):
         """Test updating a task with an empty name."""
         with self.assertRaises(ValueError):
-            self.task_manager.update_task("", new_task_name="Updated Task 1")
+            self.task_manager.update_task("", new_name="Updated Task 1", new_description=None)
 
     def test_update_task_invalid_none_name(self):
         """Test updating a task with None as name."""
         with self.assertRaises(ValueError):
-            self.task_manager.update_task(None, new_task_name="Updated Task 1")
+            self.task_manager.update_task(None, new_name="Updated Task 1", new_description=None)
 
     def test_update_task_invalid_empty_new_name(self):
         """Test updating a task with an empty new name."""
         self.task_manager.add_task("Task 1", "Description 1")
         with self.assertRaises(ValueError):
             self.task_manager.update_task(
-                "Task 1", new_task_name="", new_task_description="Updated Description"
+                task_name="Task 1", new_name="", new_description="Updated Description"
             )
 
     def test_update_task_invalid_non_existing(self):
         """Test updating a task that does not exist."""
-        updated = self.task_manager.update_task(
-            "Non-existing Task",
-            new_task_name="Updated Task",
-            new_task_description="Updated Description",
-        )
-        self.assertFalse(updated)
+        with self.assertRaises(KeyError):
+            self.task_manager.update_task(
+                task_name="Non-existing Task",
+                new_name="Updated Task",
+                new_description="Updated Description",
+            )
 
 
 if __name__ == "__main__":

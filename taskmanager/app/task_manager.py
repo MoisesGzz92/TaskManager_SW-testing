@@ -65,8 +65,13 @@ class TaskManager:
             raise ValueError("Name cannot be empty")
         if task_name not in self.tasks:
             raise KeyError(f"Task with name '{task_name}' not found.")
-        if new_name and new_name != task_name and new_name in self.tasks:
-            raise ValueError(f"Task with name '{new_name}' already exists.")
+
+        # Validate new_name if provided
+        if new_name is not None:  # Check if new_name is provided
+            if new_name == "":  # Check if new_name is empty
+                raise ValueError("New name cannot be empty")
+            if new_name != task_name and new_name in self.tasks:
+                raise ValueError(f"Task with name '{new_name}' already exists.")
 
         # Update the task with both name and description
         if new_name:
