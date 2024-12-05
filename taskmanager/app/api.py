@@ -4,10 +4,23 @@
 # of this license document, but changing it is not allowed.
 
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from task_manager import TaskManager
 
 # initialize Flask app
 app = Flask(__name__)
+
+# Enable CORS for all routes
+CORS(
+    app,
+    resources={
+        r"/*": {
+            "origins": ["http://localhost:8080", "http://127.0.0.1:8080"],
+            "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+            "allow_headers": ["Content-Type"],
+        }
+    },
+)
 
 # instanz unseres TaskManagers
 task_manager = TaskManager()
@@ -16,42 +29,51 @@ task_manager = TaskManager()
 # route für alle tasks
 @app.route("/tasks", methods=["GET"])
 def get_all_tasks():
-    # return all tasks
-    # HTTP status code 200 == OK
-    return jsonify(task_manager.get_all_tasks()), 200
+    tasks = task_manager.get_all_tasks()
+    if not tasks:
+        return jsonify([]), 200  # Return empty array instead of empty dict
+    return jsonify(list(tasks.values())), 200  # Convert dict to list if needed
 
 
 @app.route("/task", methods=["POST"])
 def add_task():
     # get data from request
     data = request.get_json()
+    print("Received data:", data)  # Debug print
+    print("Request headers:", request.headers)  # Debug print
+
     # extract name and description from data
     name = data.get("name")
     description = data.get("description")
+    print("Extracted name:", name)  # Debug print
+    print("Extracted description:", description)  # Debug print
 
     # check if name and description are valid
     if not name:
         return jsonify({"error": "Name is required"}), 400
 
-    # add task to task manager
-    task_manager.add_task(name, description)
-    # return to user that creation was successful
-    # return HTTP status code 201 == Created
-    return jsonify({"message": "Task created successfully"}), 201
+    try:
+        # add task to task manager
+        task_manager.add_task(name, description)
+        return jsonify({"message": "Task created successfully"}), 201
+    except Exception as e:
+        print("Error adding task:", str(e))  # Debug print
+        return jsonify({"error": str(e)}), 400
+
 
 # remove one task from the task manager
 @app.route("/task/<task_name>", methods=["DELETE"])
 def delete_task(task_name):
- 
-   try:
-       # delete task from task manager
-       task_manager.remove_task(task_name)
-       # return to user that deletion was successful
-       return jsonify({"message": "Task deleted successfully"}), 200
- 
-   except KeyError:
-       # return 404 if task does not exist
-       return jsonify({"error": "Task not found"}), 404
+    try:
+        # delete task from task manager
+        task_manager.remove_task(task_name)
+        # return to user that deletion was successful
+        return jsonify({"message": "Task deleted successfully"}), 200
+
+    except KeyError:
+        # return 404 if task does not exist
+        return jsonify({"error": "Task not found"}), 404
+
 
 @app.route("/task/<string:task_name>", methods=["PUT"])
 def update_task(task_name):
@@ -79,7 +101,8 @@ def clear_all_tasks():
     # delete all tasks
     task_manager.clear_tasks()
     # return to user that delete was succesful
-    return jsonify({"message":"All tasks were deleted succesfully"}), 200
+    return jsonify({"message": "All tasks were deleted succesfully"}), 200
+
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0", port=5001)
