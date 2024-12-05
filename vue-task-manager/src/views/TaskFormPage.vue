@@ -88,7 +88,7 @@ const submitTask = async () => {
   error.value = null
 
   try {
-    await axios.post('http://127.0.0.1:5000/task', task.value)
+    await axios.post('http://127.0.0.1:5001/task', task.value)
     router.push('/')
   } catch (err) {
     error.value = err.response?.data?.message || 'Failed to create task'
