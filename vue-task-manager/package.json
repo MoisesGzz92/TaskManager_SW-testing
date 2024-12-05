@@ -8,7 +8,8 @@
   "main": "main.js",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "test": "cypress open"
   },
   "dependencies": {
     "@mdi/font": "^7.4.47",
@@ -17,7 +18,8 @@
     "material-design-icons-iconfont": "^6.1.0",
     "vue": "^3.5.13",
     "vue-router": "^4.2.5",
-    "vuetify": "^3.7.5"
+    "vuetify": "^3.7.5",
+    "cypress": "13.16.0"
   },
   "devDependencies": {
     "@vue/cli-service": "^5.0.8",
