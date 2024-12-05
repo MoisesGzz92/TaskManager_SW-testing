@@ -66,13 +66,13 @@ The following examples are based on [curl](https://curl.se/) (only in Linux term
 1. Get all tasks:
 
    ```bash
-   curl -X GET http://127.0.0.1:5000/tasks
+   curl -X GET http://127.0.0.1:5001/tasks
    ```
 
 2. Add a task (POST):
 
    ```bash
-   curl -X POST http://127.0.0.1:5000/task \
+   curl -X POST http://127.0.0.1:5001/task \
      -H "Content-Type: application/json" \
      -d '{"name": "My Task", "description": "This is a task description."}'
    ```
@@ -80,7 +80,7 @@ The following examples are based on [curl](https://curl.se/) (only in Linux term
 5. Update a task (PUT):
 
    ```bash
-   curl -X PUT http://127.0.0.1:5000/task/My%20Task \
+   curl -X PUT http://127.0.0.1:5001/task/My%20Task \
      -H "Content-Type: application/json" \
      -d '{"name": "Updated Task", "description": "Updated description."}'
    ```
@@ -88,7 +88,7 @@ The following examples are based on [curl](https://curl.se/) (only in Linux term
 4. Remove a task (DELETE):
 
    ```bash
-   curl -X DELETE http://127.0.0.1:5000/task/Updated%20Task
+   curl -X DELETE http://127.0.0.1:5001/task/Updated%20Task
    ```
 
 
@@ -96,5 +96,5 @@ The following examples are based on [curl](https://curl.se/) (only in Linux term
 5. Clear all tasks:
 
    ```bash
-   curl -X DELETE http://127.0.0.1:5000/tasks
+   curl -X DELETE http://127.0.0.1:5001/tasks
    ```
