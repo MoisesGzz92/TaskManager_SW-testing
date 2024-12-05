@@ -1,0 +1,25 @@
+# docker-compose.yml
+version: '3.8'
+
+# list of services to run via docker compose
+services:
+
+  # taskmanager backend and flask api
+  task_manager:
+    build:
+      context: ../taskmanager # path to the directory containing the Dockerfile of the flask app
+      dockerfile: Dockerfile # name of the Dockerfile in the taskmanager directory
+    volumes:
+      - ./taskmanager:/taskmanager # mount the taskmanager directory to the /app directory in the container
+    ports:
+      - "5001:5001"  # expose flask app on port 5001
+
+  # vue_task_manager frontend
+  vue_task_manager:
+    build:
+      context: ../vue-task-manager # path to the directory containing the Dockerfile of the vue app
+      dockerfile: Dockerfile # name of the Dockerfile in the vue-task-manager directory
+    volumes:
+      - ./vue-task-manager:/vue-task-manager # mount the vue-task-manager directory to the /app directory in the container
+    ports:
+      - "8080:8080"  # expose vue app on port 8080
