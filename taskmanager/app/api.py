@@ -4,7 +4,7 @@
 # of this license document, but changing it is not allowed.
 
 from flask import Flask, request, jsonify
-from task_manager import TaskManager
+from .task_manager import TaskManager
 
 # initialize Flask app
 app = Flask(__name__)
@@ -32,6 +32,8 @@ def add_task():
     # check if name and description are valid
     if not name:
         return jsonify({"error": "Name is required"}), 400
+    if len(name) > 255 or (description and len(description) > 255):
+        return jsonify({"error": "Name or description cannot be longer than 255 characters"}), 400
 
     # add task to task manager
     task_manager.add_task(name, description)
@@ -39,19 +41,20 @@ def add_task():
     # return HTTP status code 201 == Created
     return jsonify({"message": "Task created successfully"}), 201
 
+
 # remove one task from the task manager
 @app.route("/task/<task_name>", methods=["DELETE"])
 def delete_task(task_name):
- 
-   try:
-       # delete task from task manager
-       task_manager.remove_task(task_name)
-       # return to user that deletion was successful
-       return jsonify({"message": "Task deleted successfully"}), 200
- 
-   except KeyError:
-       # return 404 if task does not exist
-       return jsonify({"error": "Task not found"}), 404
+    try:
+        # delete task from task manager
+        task_manager.remove_task(task_name)
+        # return to user that deletion was successful
+        return jsonify({"message": "Task deleted successfully"}), 200
+
+    except KeyError:
+        # return 404 if task does not exist
+        return jsonify({"error": "Task not found"}), 404
+
 
 @app.route("/task/<string:task_name>", methods=["PUT"])
 def update_task(task_name):
@@ -79,7 +82,34 @@ def clear_all_tasks():
     # delete all tasks
     task_manager.clear_tasks()
     # return to user that delete was succesful
-    return jsonify({"message":"All tasks were deleted succesfully"}), 200
+    return jsonify({"message": "All tasks were deleted succesfully"}), 200
+
+
+@app.route("/tasks/<name>", methods=["DELETE"])
+def remove_task(name):
+    # try to remove task from task manager
+    try:
+        task_manager.remove_task(name)
+        # return HTTP status code 200 == OK
+        return jsonify({"message": "Task removed successfully"}), 200
+    except KeyError:
+        # return HTTP status code 404 == Not Found
+        return jsonify({"error": "Task not found"}), 404
+
+
+@app.route("/tasks", methods=["DELETE"])
+def clear_tasks():
+    # clear all tasks in task manager
+    task_manager.clear_tasks()
+    # return HTTP status code 200 == OK
+    return jsonify({"message": "All tasks removed successfully"}), 200
+
+
+@app.errorhandler(Exception)
+def handle_exception(e):
+    # return HTTP status code 500 == Internal Server Error
+    return jsonify({"error": str(e)}), 500
+
 
 if __name__ == "__main__":
     app.run(debug=True)

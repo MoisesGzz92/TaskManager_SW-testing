@@ -23,10 +23,12 @@ class TaskManager:
         if task_name is None or task_name == "":
             raise ValueError("Name cannot be empty")
         # Check if the task description is valid
-        if len(task_name) > 255 or len(task_description) > 255:
+        if len(task_name) > 255 or (task_description and len(task_description) > 255):
             raise ValueError("Name or description cannot be longer than 255 characters")
+        # Check if the task name already exists
         if task_name in self.tasks:
             raise ValueError("Task with this name already exists.")
+        # Add the task to the dictionary
         self.tasks[task_name] = {"description": task_description}
 
     def get_all_tasks(self):
@@ -56,30 +58,32 @@ class TaskManager:
     def update_task(self, task_name, new_task_name=None, new_task_description=None):
         """
         Updates an existing task's name and/or description.
-        :param task_name: The name of the task to update.
-        :param new_task_name: The new name of the task (optional).
-        :param new_task_description: The new description of the task (optional).
-        :return: True if the task was updated, False if the task was not found.
         """
+        # Check if the task name is valid
         if task_name is None or task_name == "":
             raise ValueError("Name cannot be empty")
+        # Check if the task name exists
         if task_name not in self.tasks:
-            return False  # Task not found
+            raise KeyError(f"Task with name '{task_name}' not found.")
 
         # Check if the new name is valid
-        if new_task_name == "":
-            raise ValueError("Name cannot be empty")
-        if new_task_description == "":
-            raise ValueError("Description cannot be empty")
+        if new_task_name is None or new_task_name == "":
+            raise ValueError("New Name is required")
+        # Check if the new description is valid
+        if len(new_task_name) > 255 or (new_task_description and len(new_task_description) > 255):
+            raise ValueError("New Name or description cannot be longer than 255 characters")
 
         # Update the task
         if new_task_name:
+            # Update the task name
             self.tasks[new_task_name] = self.tasks.pop(task_name)
+            # Update the task description
             self.tasks[new_task_name]["description"] = (
                 new_task_description
                 if new_task_description
                 else self.tasks[new_task_name]["description"]
             )
+        # Update the task description
         elif new_task_description:
             self.tasks[task_name]["description"] = new_task_description
 

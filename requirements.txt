@@ -4,6 +4,7 @@ behave==1.2.6
 
 # static code analysis framework
 pre-commit==4.0.1
+coverage==7.6.7
 
 # REST API framework
 Flask==3.0.1

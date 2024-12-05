@@ -1,0 +1,29 @@
+[tool.coverage]
+# Include branch coverage to get more detailed information
+branch = true
+# Specify the source directories to measure coverage
+source = ["your_application_package_name"]  # Replace with your actual package name
+
+[tool.coverage.report]
+# Set the minimum coverage percentage to fail the build
+fail_under = 80  # Adjust this threshold as needed
+# Exclude certain files or directories from the report
+omit = [
+    "*/tests/*",
+    "*/migrations/*",
+    "*/venv/*",
+    "*/__init__.py",
+    "*/settings.py",  # If you have a settings file that shouldn't be covered
+    "*/manage.py",     # If using Django, for example
+    "*/wsgi.py"        # If using WSGI entry points
+]
+# Show missing lines in the report
+show_missing = true
+
+[tool.coverage.html]
+# Directory to output the HTML report
+directory = "htmlcov"
+
+[tool.coverage.xml]
+# Output XML report for CI/CD integration
+output = "coverage.xml"
